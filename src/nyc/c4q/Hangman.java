@@ -49,4 +49,24 @@ public class Hangman {
     public boolean guessedSuccessfully() {
         return mSecretWord.isGuessed();
     }
+
+    public boolean wantToPlayAgain(){
+        System.out.println("Play again? Enter yes or no: ");
+        String userInput = "";
+        do {
+            userInput = readString();
+            if (userInput.equalsIgnoreCase("no") || userInput.equalsIgnoreCase("n")) {
+                return false;
+            } else if (userInput.equalsIgnoreCase("yes") || userInput.equalsIgnoreCase("y")) {
+                return true;
+            } else {
+                System.out.println("Please enter yes, y or no, n ");
+            }
+        } while(true);
+    }
+
+    public static String readString(){
+        Scanner scanner = new Scanner(System.in);
+        return scanner.next();
+    }
 }
