@@ -16,18 +16,17 @@ public class Hangman {
     public int getMisses(){
         return mMisses;
     }
-
-    public void readLetter() {
+    private void readLetter() {
         Scanner scanner = new Scanner(System.in);
         char input = scanner.next().charAt(0);
         mLastGuess = Character.toUpperCase(input);
     }
 
-    public void promptPlayer(String string) {
+    private void promptPlayer(String string) {
         System.out.println(string);
     }
 
-    public boolean checkLetter() {
+    private boolean checkLetter() {
         if (mSecretWord.isLetter(mLastGuess)) {
             // If letter is in word do something
             mSecretWord.set(mLastGuess);
@@ -38,21 +37,47 @@ public class Hangman {
         }
     }
 
-    public void printCurrentWord(){
+    private void printCurrentWord(){
         System.out.println(mSecretWord);
     }
 
-    public String getSecretWord() {
+
+    public static void main(String[] args) {
+        boolean playMore;
+        do {
+            Hangman hangman = new Hangman();
+            while (hangman.getMisses() < 5) {
+                hangman.printCurrentWord();
+                hangman.promptPlayer("Enter a letter: ");
+                hangman.readLetter();
+                hangman.checkLetter();
+                if (hangman.guessedSuccessfully()) {
+                    break;
+                }
+                System.out.println(Drawing.get(hangman.getMisses()));
+                System.out.println("Misses -> " + hangman.getMisses());
+            }
+            if (hangman.guessedSuccessfully()) {
+                System.out.println("Success");
+            } else {
+                System.out.println("The answer was " + hangman.getSecretWord() + "\n");
+            }
+            playMore = hangman.wantToPlayAgain();
+
+        }while (playMore);
+    }
+
+    private String getSecretWord() {
         return mSecretWord.reveal();
     }
 
-    public boolean guessedSuccessfully() {
+    private boolean guessedSuccessfully() {
         return mSecretWord.isGuessed();
     }
 
     public boolean wantToPlayAgain(){
-        System.out.println("Play again? Enter yes or no: ");
-        String userInput = "";
+            System.out.println("Play again? Enter yes or no: ");
+            String userInput = "";
         do {
             userInput = readString();
             if (userInput.equalsIgnoreCase("no") || userInput.equalsIgnoreCase("n")) {
